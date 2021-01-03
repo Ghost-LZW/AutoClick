@@ -39,6 +39,7 @@ int main() {
     HWND hConsole = GetActiveWindow();
 
     RegisterHotKey(hConsole, 1, 0, VK_F1);
+    RegisterHotKey(hConsole, 2, 0, VK_F2);
 
     HANDLE handle;
     DWORD thread;
@@ -50,11 +51,22 @@ int main() {
                     if (stop) {
                         stop = false;
                         handle = CreateThread(nullptr, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(ThreadFunc), nullptr, 0, &thread);
+
                     } else {
                         stop = true;
                         CloseHandle(handle);
                     }
                     cout << "Touch F1" << endl;
+                    break;
+                case 2 :
+                    if (!stop) {
+                        stop = true;
+                        CloseHandle(handle);
+                    }
+                    cout << "Over" << endl;
+                    UnregisterHotKey(hConsole, 1);
+                    UnregisterHotKey(hConsole, 2);
+                    exit(0);
                     break;
                 default:
                     break;
@@ -62,6 +74,7 @@ int main() {
         }
     }
     UnregisterHotKey(hConsole, 1);
+    UnregisterHotKey(hConsole, 2);
 
     return 0;
 }
